@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
-// interface Todo {
-//   id: string;
-//   text: string;
-// }
-interface User{
-    id: string;
-    email: string;
-    password: string;
-    googleId:string;
-    secret:string;
+interface  User {
+  id:       string;
+  email:    string;
+  password: string;
+  googleId: string;
+  secret:   string;
 }
 
 
 const TodoApp = () => {
   const [todos, setTodos] = useState<User[]>([]);
   const [newTodo, setNewTodo] = useState('');
-  // const [editingTodo, setEditingTodo] =  useState<User|"">("");
+  const [editingTodo, setEditingTodo] =  useState<User|"">("");
 
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, todos);
 
   const fetchTodos = async () => {
     try {
@@ -29,7 +25,6 @@ const TodoApp = () => {
 
       });
       const response = await fetch('http://localhost:3000/todos', {headers})
-      console.log(response)
       const data = await response.json();
       setTodos(data);
     } catch (error) {
@@ -44,10 +39,12 @@ const TodoApp = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        secret: newTodo,
-      }),
+      email:"reactivenative@yopmail.com" ,
+      password:"123" ,
+      googleId:"null" ,
+      secret:newTodo,
+    }),
     });
-    console.log(response)
     const data = await response.json();
     setTodos([...todos, data]);
     setNewTodo('');
@@ -60,12 +57,15 @@ const TodoApp = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        // secret: editingTodo?.secret,
+      // email:editingTodo?.email ,
+      // password:editingTodo?.password ,
+      // googleId:editingTodo?.googleId ,
+      // secret:editingTodo?.secret
       }),
     });
     const data = await response.json();
     setTodos(todos.map(t => t.id === data.id ? data : t));
-    // setEditingTodo(null);
+    setEditingTodo(null);
   };
 
   const handleDeleteTodo = async (todo: User) => {
@@ -75,31 +75,25 @@ const TodoApp = () => {
     setTodos(todos.filter(t => t.id !== todo.id));
   };
 
-  const renderTodo = (todo: User) => {
-    return (
-      <div key={todo.id}>
-        {/*{editingTodo.id === todo.id ? (*/}
-          <>
-            <input key={todo.id} value={todo.secret} />
-            <button key={todo.id} onClick={() => handleEditTodo(todo)}>Edit</button>
-        {/*) : (*/}
-        {/*    <button onClick={() => setEditingTodo(todo)}>Edit</button>*/}
-            <button key={todo.id} onClick={() => handleDeleteTodo(todo)}>Delete</button>
-          </>
-        {/*)}*/}
-      </div>
-    );
-  };
-  return (
+  return <div>
+    <h1>Todo App</h1>
+    <form>
+      <input value={newTodo} onChange={e => setNewTodo(e.target.value)} />
+      <button type="submit" onClick={handleAddTodo}>Add Todo</button>
+    </form>
     <div>
-      <h1>Todo App</h1>
-      <form onSubmit={handleAddTodo}>
-        <input value={newTodo} onChange={e => setNewTodo(e.target.value)} />
-        <button type="submit">Add Todo</button>
-      </form>
-      {todos.map(renderTodo)}
-    </div>
-  );
+    {todos.map((todo,index) => <div key={index}>
+      {/*{editingTodo.id === todo.id ? (*/}
+        <>
+          <input key={index} value={todo.secret} onChange={e => todo.secret=e.target.value}/>
+          <button key={index} onClick={() => handleEditTodo(todo)}>Edit</button>
+      {/*) : (*/}
+          <button key={index} onClick={() => handleDeleteTodo(todo)}>Delete</button>
+        </>
+      {/*)}*/}
+    </div>)}
+      </div>
+  </div>;
 };
 
 export default TodoApp;

@@ -1,16 +1,14 @@
-generator client {
-  provider = "prisma-client-js"
+generator jsonSchema {
+  provider = "prisma-json-schema-generator"
 }
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb+srv://admin-Eyad:eyad2001@cluster0.2spvg.mongodb.net/UserDB"
+  url      = "admin-Eyad:eyad2001@cluster0.2spvg.mongodb.net/UserDB"
 }
 
 model User {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
-  // title   String
-  // updated DateTime @default(now()) @updatedAt @map(name: "updated_at")
   email    String
   password String
   googleId String
