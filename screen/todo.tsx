@@ -16,7 +16,7 @@ interface User{
 const TodoApp = () => {
   const [todos, setTodos] = useState<User[]>([]);
   const [newTodo, setNewTodo] = useState('');
-  const [editingTodo, setEditingTodo] =  useState<User|"">("");
+  // const [editingTodo, setEditingTodo] =  useState<User|"">("");
 
   useEffect(() => {
     fetchTodos();
@@ -69,7 +69,7 @@ const TodoApp = () => {
   };
 
   const handleDeleteTodo = async (todo: User) => {
-    const response = await fetch(`http://localhost:3000/todos/${todo.id}`, {
+    await fetch(`http://localhost:3000/todos/${todo.id}`, {
       method: 'DELETE',
     });
     setTodos(todos.filter(t => t.id !== todo.id));
@@ -83,14 +83,13 @@ const TodoApp = () => {
             <input key={todo.id} value={todo.secret} />
             <button key={todo.id} onClick={() => handleEditTodo(todo)}>Edit</button>
         {/*) : (*/}
-            <button onClick={() => setEditingTodo(todo)}>Edit</button>
+        {/*    <button onClick={() => setEditingTodo(todo)}>Edit</button>*/}
             <button key={todo.id} onClick={() => handleDeleteTodo(todo)}>Delete</button>
           </>
         {/*)}*/}
       </div>
     );
   };
-
   return (
     <div>
       <h1>Todo App</h1>
