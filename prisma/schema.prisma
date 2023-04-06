@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb+srv://admin-Eyad:eyad2001@cluster0.2spvg.mongodb.net/UserDB"
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  // title   String
+  // updated DateTime @default(now()) @updatedAt @map(name: "updated_at")
+  email    String
+  password String
+  googleId String
+  secret   String
+}
